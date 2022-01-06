@@ -24,3 +24,13 @@ jobs:
     - name: Build
       run: cd 2-2/ && go build  
 
+    - name: commit
+      run: |
+        git config --global user.email zflmiy@qq.com
+        git config --global user.name FLM210
+        git add .
+        git commit -m "update" -a
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+
