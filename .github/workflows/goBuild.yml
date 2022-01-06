@@ -19,7 +19,7 @@ jobs:
         go-version: 1.17
 
     - name: go mod 
-      run: go mod tidy
+      run: cd 2-2/ && go mod tidy
 
     - name: Build
       run: cd 2-2/ && go build  
