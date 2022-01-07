@@ -29,8 +29,7 @@ jobs:
     - name: build Docker Image
       run: |
         docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
-        cd 2-2/ && docker build -t httpserver:latest . #执行构建
-        docker tag httpServer registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver
-        docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver 
+        cd 2-2/ && docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v1 . #执行构建
+        docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v1
 
 
