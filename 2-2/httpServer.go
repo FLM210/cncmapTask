@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"io"
+
 	"net/http"
 	"os"
 
@@ -12,7 +13,12 @@ import (
 func main() {
 	http.Handle("/", index(indexhandler()))
 	http.Handle("/healthz", healthz(healthzhandler()))
-	http.ListenAndServe(":80", nil)
+	LISTENPORT := os.Getenv("LISTENPORT")
+	if LISTENPORT != "" {
+		http.ListenAndServe(":"+LISTENPORT, nil)
+	} else {
+		http.ListenAndServe(":80", nil)
+	}
 
 }
 
