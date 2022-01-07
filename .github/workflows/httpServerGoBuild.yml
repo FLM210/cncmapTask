@@ -3,9 +3,8 @@ name: Go
 on:
   push:
     branches:    
-      - main
+      - "module2"
       # Push events to branches matching refs/heads/mona/octocat
-      - 'cncmapTask/2-2/'
 
 jobs:
 
@@ -20,16 +19,16 @@ jobs:
         go-version: 1.17
 
     - name: go mod 
-      run: cd 2-2/ && go mod tidy
+      run: go mod tidy
 
     - name: Build 
-      run: cd 2-2/ && go build  
+      run:  go build  
     
 
     - name: build Docker Image
       run: |
         docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
-        cd 2-2/ && docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v1 . #执行构建
+        docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v1 . 
         docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v1
 
 
