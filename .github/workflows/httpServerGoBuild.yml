@@ -25,14 +25,12 @@ jobs:
     - name: Build 
       run: cd 2-2/ && go build  
     
-    - name: get docker hub info
-      run: echo ${{ secrets.DOCKERUSERNAME }} ${{ secrets.DOCKERPASSWORD }} || echo ${secrets.DOCKERUSERNAME} ${secrets.DOCKERPASSWORD}
 
-    # - name: build Docker Image
-    #   run: |
-    #     docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
-    #     cd 2-2/ && docker build -t httpServer:latest . #执行构建
-    #     docker tag httpServer registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpServer
-    #     docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpServer 
+    - name: build Docker Image
+      run: |
+        docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
+        cd 2-2/ && docker build -t httpserver:latest . #执行构建
+        docker tag httpServer registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver
+        docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver 
 
 
