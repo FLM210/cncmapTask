@@ -3,7 +3,7 @@ name: Go
 on:
   push:
     branches:    
-      - "module2"
+      - "module3"
       # Push events to branches matching refs/heads/mona/octocat
 
 jobs:
