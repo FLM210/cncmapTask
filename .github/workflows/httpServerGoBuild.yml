@@ -28,7 +28,7 @@ jobs:
     - name: build Docker Image
       run: |
         docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
-        docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v2 -f DockerfileMultiSegmentBuild  
+        docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v2 -f DockerfileMultiSegmentBuild  .
         docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v2
 
 
