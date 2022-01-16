@@ -1,13 +1,13 @@
 FROM golang:1.17.5 AS build
 ENV GOOS=LINUX \
     GOPROXY=https://goproxy.cn \
-    GO111MODULE=off \	
+    GO111MODULE=on \	
     CGO_ENABLED=0 \	
     GOOS=linux \	
     GOARCH=amd64
 WORKDIR /gobuild
 COPY . /gobuild/
-RUN go build -o httpserver .
+RUN go mod init && go mod tudy && go build -o httpserver .
 
 
 FROM scratch
