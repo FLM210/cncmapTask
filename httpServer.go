@@ -19,7 +19,6 @@ func main() {
 	} else {
 		http.ListenAndServe(":80", nil)
 	}
-
 }
 
 func indexhandler() http.Handler {
