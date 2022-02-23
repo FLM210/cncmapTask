@@ -3,6 +3,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -30,13 +31,13 @@ func main() {
 		fmt.Print("user env listenPort")
 		listenPort = ":" + listenPort
 	} else {
-		cfg, err := goconfig.LoadConfigFile("http.conf")
-		if err == nil {
+		if len(os.Args) == 2 {
+			cfg, _ := goconfig.LoadConfigFile(os.Args[1])
 			fmt.Println("use conf")
 			confPort, _ := cfg.GetValue("", "listenPort")
 			listenPort = ":" + confPort
 		} else {
-			fmt.Print("use dafault 80")
+			fmt.Println("use dafault conf")
 			listenPort = ":80"
 		}
 	}
@@ -54,13 +55,10 @@ func main() {
 		log.Println("server shutdown")
 	}()
 
-	// Handle SIGINT and SIGTERM.
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-	log.Println(<-ch)
-	// Stop the service gracefully.
-	log.Println(s.Shutdown(nil))
-	// Wait gorotine print shutdown message
+	<-ch
+	log.Println(s.Shutdown(context.TODO()))
 }
 
 //write request header to reponse header
