@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  http.conf: listenPort=8525
+kind: ConfigMap
+metadata:
+  name: httpconf
+  namespace: default
