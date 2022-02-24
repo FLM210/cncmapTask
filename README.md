@@ -9,6 +9,8 @@
 ## 若未指定任何参数则默认使用80端口
 
 # In Kubernetes 
-cd deploy 
-kubectl apply -f deployment.yaml  //部署应用
-kubectl apply -f configmap.yaml  //应用的配置文件
+
+>部署应用 
+kubectl apply -f deploy/deployment.yaml   
+>应用配置文件
+kubectl apply -f deploy/configmap.yaml  
