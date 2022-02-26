@@ -1,44 +1,44 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp
+  name: gohttpserver
 spec:
   selector:
     matchLabels:
-      app: myapp
+      app: gohttpserver
   template:
     metadata:
       labels:
-        app: myapp
+        app: gohttpserver
     spec:
       containers:
-      - name: myapp
+      - name: gohttpserver
         image: registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v3
         args:
-        - "/etc/http.conf"
+        - "/etc/goserver/http.conf"
         resources:
           limits:
             memory: "128Mi"
             cpu: "500m"
         ports:
-        - containerPort: 8080
+        - containerPort: 80
           name: listenport
           protocol: TCP
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 8080
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: /healthz
-            port: 8080
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 3
         volumeMounts:
           - name: httpconf
-            mountPath: "/etc/http.conf"
+            mountPath: "/etc/goserver"
       volumes:
         - name: httpconf
           configMap:
