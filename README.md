@@ -10,10 +10,14 @@
 
 # In Kubernetes 
 
->部署应用 
+>部署应用   
+>
 kubectl apply -f deploy/deployment.yaml   
->应用配置文件
-kubectl apply -f deploy/configmap.yaml
->配置ingress
+>应用配置文件  
+>
+kubectl apply -f deploy/configmap.yaml  
+>配置ingress  
+>
 kubectl apply -f deploy/svc.yaml  
 kubectl apply -f deploy/ingress.yaml  
+
