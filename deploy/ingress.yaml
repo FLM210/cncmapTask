@@ -6,13 +6,17 @@ metadata:
     name: gohttpserver
 spec:
   rules:
-  - host: httpserver.me
+  - host: cncamp.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/"
-        backend:
+      - backend:
           service:
             name: gohttpserver
-            port: 
+            port:
               number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - cncamp.com
+    secretName: cncamp-tls
