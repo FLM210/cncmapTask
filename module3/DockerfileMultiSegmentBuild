@@ -1,0 +1,16 @@
+FROM golang:1.17.5 AS build
+ENV GOOS=LINUX \
+    GOPROXY=https://goproxy.cn \
+    GO111MODULE=off \	
+    CGO_ENABLED=0 \	
+    GOOS=linux \	
+    GOARCH=amd64
+WORKDIR /gobuild
+COPY . /gobuild/
+RUN GO111MODULE=on go mod tidy
+RUN GO111MODULE=on  go build -o httpserver .
+
+
+FROM alpine
+COPY  --from=build  /gobuild/httpserver /httpserver
+ENTRYPOINT [ "/httpserver" ]
