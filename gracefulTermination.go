@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,12 +19,24 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		time.Sleep(time.Duration(createRandomInt(2)) * 1e9)
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
+		end := time.Now()
+		delta := end.Sub(start)
+		fmt.Printf("This processing delay is %s\n", delta)
 	})
 	http.HandleFunc("/healthz", func(rw http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		time.Sleep(time.Duration(createRandomInt(2)) * 1e9)
+		responseHeader(rw, r)
+		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
+		end := time.Now()
+		delta := end.Sub(start)
 		responseHeader(rw, r)
 		fmt.Fprint(rw, "server is healthy")
+		fmt.Printf("This processing delay is %s\n", delta)
 	})
 
 	listenPort := os.Getenv("listenPort")
@@ -68,4 +81,10 @@ func responseHeader(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add(i, string(reposeVaule))
 	}
 	w.Header().Add("VERSION", os.Getenv("VERSION"))
+}
+
+//generate random numbers
+func createRandomInt(num int) int {
+	r := rand.Intn(num)
+	return r
 }
