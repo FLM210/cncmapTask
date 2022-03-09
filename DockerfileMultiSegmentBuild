@@ -6,7 +6,8 @@ ENV GOOS=LINUX \
     GOOS=linux \	
     GOARCH=amd64
 WORKDIR /gobuild
-COPY . /gobuild/
+COPY main.go /gobuild/
+COPY go.* /gobuild/
 RUN GO111MODULE=on go mod tidy
 RUN GO111MODULE=on  go build -o httpserver .
 

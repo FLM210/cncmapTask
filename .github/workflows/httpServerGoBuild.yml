@@ -3,8 +3,9 @@ name: Go
 on:
   push:
     branches:    
-      - "module3"
-      # Push events to branches matching refs/heads/mona/octocat
+      - "main"
+    paths:
+      - "main.go"
 
 jobs:
 
@@ -13,22 +14,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.17
+    # - name: Set up Go
+    #   uses: actions/setup-go@v2
+    #   with:
+    #     go-version: 1.17
 
-    - name: go mod 
-      run: go mod tidy
+    # - name: go mod 
+    #   run: go mod tidy
 
-    - name: Build 
-      run:  go build  
+    # - name: Build 
+    #   run:  go build  
     
 
     - name: build Docker Image
       run: |
         docker login --username=${{ secrets.DOCKERUSERNAME }} registry.cn-hangzhou.aliyuncs.com --password=${{ secrets.DOCKERPASSWORD }} 
-        docker build -t registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v2 -f DockerfileMultiSegmentBuild  .
-        docker push registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v2
+        bash buildDocker.sh
 
 

@@ -12,12 +12,11 @@
 
 >部署应用   
 >
-kubectl apply -f deploy/deployment.yaml   
+kubectl apply -f module8/deploy/deployment.yaml   
 >应用配置文件  
 >
-kubectl apply -f deploy/configmap.yaml  
+kubectl apply -f module8/deploy/deployment.yaml  
 >配置ingress  
 >
-kubectl apply -f deploy/svc.yaml  
-kubectl apply -f deploy/ingress.yaml  
-
+kubectl apply -f module8/deploy/deployment.yaml 
+kubectl apply -f module8/deploy/deployment.yaml 

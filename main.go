@@ -1,4 +1,4 @@
-// main.go
+// version: v3
 
 package main
 
