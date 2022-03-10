@@ -15,29 +15,33 @@ import (
 	"time"
 
 	"github.com/Unknwon/goconfig"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
+	delayTime := prometheus.NewHistogram(prometheus.HistogramOpts{
+		Name:    "http_request_durations",
+		Help:    "A histogram of the HTTP request durations in seconds.",
+		Buckets: prometheus.ExponentialBuckets(0.1, 2, 5),
+	})
+
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		time.Sleep(time.Duration(createRandomInt(2)) * 1e9)
+		timer := prometheus.NewTimer(delayTime)
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
-		end := time.Now()
-		delta := end.Sub(start)
-		fmt.Printf("This processing delay is %s\n", delta)
+		timer.ObserveDuration()
 	})
 	http.HandleFunc("/healthz", func(rw http.ResponseWriter, r *http.Request) {
-		start := time.Now()
-		time.Sleep(time.Duration(createRandomInt(2)) * 1e9)
+		timer := prometheus.NewTimer(delayTime)
+		defer timer.ObserveDuration()
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
-		end := time.Now()
-		delta := end.Sub(start)
 		responseHeader(rw, r)
 		fmt.Fprint(rw, "server is healthy")
-		fmt.Printf("This processing delay is %s\n", delta)
 	})
+	prometheus.Register(delayTime)
+	http.Handle("/metrics", promhttp.Handler())
 
 	listenPort := os.Getenv("listenPort")
 	if listenPort != "" {
@@ -68,6 +72,7 @@ func main() {
 		log.Println("server shutdown")
 	}()
 
+	//优雅终止
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	<-ch
