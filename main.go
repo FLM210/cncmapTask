@@ -20,27 +20,35 @@ import (
 )
 
 func main() {
-	delayTime := prometheus.NewHistogram(prometheus.HistogramOpts{
-		Name:    "http_request_durations",
-		Help:    "A histogram of the HTTP request durations in seconds.",
-		Buckets: prometheus.ExponentialBuckets(0.1, 2, 5),
+	// delayTime := prometheus.NewHistogram(prometheus.HistogramOpts{
+	// 	Name:    "http_request_durations",
+	// 	Help:    "A histogram of the HTTP request durations in seconds.",
+	// 	Buckets: prometheus.ExponentialBuckets(0.1, 2, 5),
+	// })
+
+	processingtime := prometheus.NewGauge(prometheus.GaugeOpts{
+		Namespace: "our_company",
+		Subsystem: "blob_storage",
+		Name:      "http_request_processingtime",
+		Help:      "Number of blob storage operations waiting to be processed.",
 	})
 
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		timer := prometheus.NewTimer(delayTime)
+		startTime := time.Now()
+		time.Sleep(time.Duration(createRandomInt(2) * 1e9))
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
-		timer.ObserveDuration()
+		costTime := time.Since(startTime)
+		fmt.Println(costTime.Seconds())
+		processingtime.Set(costTime.Seconds())
 	})
 	http.HandleFunc("/healthz", func(rw http.ResponseWriter, r *http.Request) {
-		timer := prometheus.NewTimer(delayTime)
-		defer timer.ObserveDuration()
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
 		responseHeader(rw, r)
 		fmt.Fprint(rw, "server is healthy")
 	})
-	prometheus.Register(delayTime)
+	prometheus.Register(opsQueued)
 	http.Handle("/metrics", promhttp.Handler())
 
 	listenPort := os.Getenv("listenPort")
