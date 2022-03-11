@@ -35,7 +35,7 @@ func main() {
 
 	http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
 		startTime := time.Now()
-		time.Sleep(time.Duration(createRandomInt(2) * 1e9))
+		time.Sleep(time.Duration(createRandomInt(5) * 1e9))
 		responseHeader(rw, r)
 		fmt.Fprintf(rw, "Hello World, %v\n", time.Now())
 		costTime := time.Since(startTime)
