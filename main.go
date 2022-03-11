@@ -48,7 +48,7 @@ func main() {
 		responseHeader(rw, r)
 		fmt.Fprint(rw, "server is healthy")
 	})
-	prometheus.Register(opsQueued)
+	prometheus.Register(processingtime)
 	http.Handle("/metrics", promhttp.Handler())
 
 	listenPort := os.Getenv("listenPort")
