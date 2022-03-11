@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gohttpserver
+spec:
+  selector:
+    matchLabels:
+      app: gohttpserver
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "80"
+        prometheus.io/scrape: "true"
+      labels:
+        app: gohttpserver
+    spec:
+      containers:
+      - name: gohttpserver
+        image: registry.cn-hangzhou.aliyuncs.com/my_docker_images/httpserver:v3
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+          name: listenport
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 3

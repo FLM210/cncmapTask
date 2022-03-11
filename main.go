@@ -27,8 +27,7 @@ func main() {
 	// })
 
 	processingtime := prometheus.NewGauge(prometheus.GaugeOpts{
-		Namespace: "our_company",
-		Subsystem: "blob_storage",
+		Namespace: "gohttpserver",
 		Name:      "http_request_processingtime",
 		Help:      "Number of blob storage operations waiting to be processed.",
 	})
