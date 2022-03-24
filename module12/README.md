@@ -21,4 +21,4 @@ kubectl apply -f istio-ingress.yaml -n demo-istio
 
 ## 访问https服务
 
-curl --resolve gohttpserver.cncamp.io:443:`kubectl get svc -n istio-system istio-ingressgateway   -o jsonpath='{.spec.clusterIP}'`   https://gohttpserver.cncamp.io/healthz -v -k
+curl --resolve gohttpserver.cncamp.io:443:\`kubectl get svc -n istio-system istio-ingressgateway   -o jsonpath='{.spec.clusterIP}'\`   https://gohttpserver.cncamp.io/healthz -v -k
