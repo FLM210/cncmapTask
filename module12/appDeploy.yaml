@@ -69,6 +69,10 @@ spec:
         - name: httpserver
           imagePullPolicy: IfNotPresent
           image: cncamp/httpserver:v1.0-metrics
+          resources:
+            limits:
+              memory: "10Mi"
+              cpu: "20m"
           ports:
             - containerPort: 80
 ---
